@@ -70,8 +70,8 @@ class Tenant(BaseModel):
     email: str
     phone: str
     apartment_id: Optional[str] = None
-    lease_start: date
-    lease_end: date
+    lease_start: str  # Changed from date to str for MongoDB compatibility
+    lease_end: str    # Changed from date to str for MongoDB compatibility
     monthly_rent: float
     deposit_paid: float
     emergency_contact_name: Optional[str] = None
