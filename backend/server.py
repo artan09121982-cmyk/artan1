@@ -380,10 +380,10 @@ async def get_dashboard():
     total_apartments = await db.apartments.count_documents({})
     total_tenants = await db.tenants.count_documents({})
     
-    # Get overdue payments
-    today = datetime.now().date()
+    # Get overdue payments (comparing string dates)
+    today_str = now.strftime("%Y-%m-%d")
     overdue_payments = await db.rent_payments.find({
-        "due_date": {"$lt": today},
+        "due_date": {"$lt": today_str},
         "status": {"$in": ["unpaid", "partial"]}
     }).to_list(100)
     
