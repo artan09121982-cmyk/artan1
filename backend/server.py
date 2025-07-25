@@ -107,8 +107,8 @@ class RentPaymentCreate(BaseModel):
     tenant_id: str
     apartment_id: str
     amount: float
-    due_date: date
-    paid_date: Optional[date] = None
+    due_date: str     # Changed from date to str for MongoDB compatibility
+    paid_date: Optional[str] = None  # Changed from date to str for MongoDB compatibility
     status: RentStatus = RentStatus.UNPAID
     payment_method: Optional[str] = None
     notes: Optional[str] = None
