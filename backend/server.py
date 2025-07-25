@@ -279,18 +279,30 @@ async def delete_expense(expense_id: str):
 # Financial Reports
 @api_router.get("/reports/monthly/{year}/{month}", response_model=FinancialSummary)
 async def get_monthly_report(year: int, month: int):
-    # Calculate date range
-    start_date = datetime(year, month, 1)
-    if month == 12:
-        end_date = datetime(year + 1, 1, 1)
+    # Calculate date range as strings
+    if month < 10:
+        start_date_str = f"{year}-0{month}-01"
     else:
-        end_date = datetime(year, month + 1, 1)
+        start_date_str = f"{year}-{month}-01"
+    
+    # Get next month for end date
+    if month == 12:
+        next_year = year + 1
+        next_month = 1
+    else:
+        next_year = year
+        next_month = month + 1
+        
+    if next_month < 10:
+        end_date_str = f"{next_year}-0{next_month}-01"
+    else:
+        end_date_str = f"{next_year}-{next_month}-01"
     
     # Get rent payments for the month
     rent_payments = await db.rent_payments.find({
         "paid_date": {
-            "$gte": start_date.date(),
-            "$lt": end_date.date()
+            "$gte": start_date_str,
+            "$lt": end_date_str
         },
         "status": "paid"
     }).to_list(1000)
@@ -298,8 +310,8 @@ async def get_monthly_report(year: int, month: int):
     # Get expenses for the month
     expenses = await db.expenses.find({
         "date": {
-            "$gte": start_date.date(),
-            "$lt": end_date.date()
+            "$gte": start_date_str,
+            "$lt": end_date_str
         }
     }).to_list(1000)
     
@@ -310,19 +322,25 @@ async def get_monthly_report(year: int, month: int):
     
     # Calculate occupancy rate (simplified)
     total_apartments = await db.apartments.count_documents({})
-    occupied_apartments = await db.tenants.count_documents({
-        "lease_start": {"$lte": end_date.date()},
-        "lease_end": {"$gte": start_date.date()}
-    })
     
-    occupancy_rate = (occupied_apartments / total_apartments * 100) if total_apartments > 0 else 0
+    # For occupied apartments, check if lease dates overlap with the month
+    occupied_apartments = await db.tenants.find({
+        "lease_start": {"$lte": end_date_str},
+        "lease_end": {"$gte": start_date_str}
+    }).to_list(1000)
+    
+    occupancy_rate = (len(occupied_apartments) / total_apartments * 100) if total_apartments > 0 else 0
+    
+    # Get month name
+    month_names = ["", "January", "February", "March", "April", "May", "June",
+                   "July", "August", "September", "October", "November", "December"]
     
     return FinancialSummary(
         total_rental_income=total_rental_income,
         total_expenses=total_expenses,
         net_profit=net_profit,
         occupancy_rate=occupancy_rate,
-        month=start_date.strftime("%B"),
+        month=month_names[month],
         year=year
     )
 
