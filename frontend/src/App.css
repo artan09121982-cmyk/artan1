@@ -1,38 +1,156 @@
-.App {
-    text-align: center;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom scrollbar styles */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
-.App-link {
-    color: #61dafb;
+/* Form input focus states */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+  border-color: #3b82f6;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Button hover animations */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Card shadows */
+.shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Table row hover effect */
+tr:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* Status badges */
+.status-paid {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-unpaid {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.status-overdue {
+  background-color: #fff1f2;
+  color: #be123c;
+}
+
+/* Loading spinner */
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive table improvements */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+  
+  .table-responsive th,
+  .table-responsive td {
+    padding: 0.5rem;
+  }
+}
+
+/* Alert messages */
+.alert {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert-warning {
+  background-color: #fefce8;
+  color: #a16207;
+  border: 1px solid #fde68a;
+}
+
+/* Dashboard cards animation */
+.dashboard-card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Navigation active state */
+.nav-active {
+  border-bottom-color: #3b82f6;
+  color: #3b82f6;
+}
+
+/* Form validation styles */
+.form-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.form-error:focus {
+  ring-color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Custom grid spacing */
+.grid-responsive {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
