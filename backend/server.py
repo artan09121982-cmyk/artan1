@@ -129,7 +129,7 @@ class ExpenseCreate(BaseModel):
     expense_type: ExpenseType
     amount: float
     description: str
-    date: date
+    date: str         # Changed from date to str for MongoDB compatibility
     vendor: Optional[str] = None
     receipt_url: Optional[str] = None
 
